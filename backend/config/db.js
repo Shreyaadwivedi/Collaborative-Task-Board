@@ -7,7 +7,16 @@ const connectDB = async () => {
     console.info(`MongoDB connected: ${connection.connection.host}`);
   } catch (error) {
     console.error('MongoDB connection failed:', error.message);
-    process.exit(1);
+console.error('Error name:', error.name);
+
+if (error.reason?.servers) {
+  for (const [address, server] of error.reason.servers) {
+    console.error('Server:', address);
+    console.error('Server error:', server.error?.message);
+  }
+}
+
+process.exit(1);
   }
 };
 
